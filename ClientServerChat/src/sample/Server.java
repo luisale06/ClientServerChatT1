@@ -77,3 +77,58 @@ public class Server extends Application implements Runnable {
      */
     @Override
     public void run() {
+       try {
+            resocket = new ServerSocket(4999);
+
+            /**
+             * While loop that keeps the socket looking for messages
+             */
+            while (true) {
+                sckt = resocket.accept();
+
+                /**
+                 * The message sent by the client is received as an object
+                 * "entryflow" is the stream that receives it and "details"
+                 * read the object that is received
+                 */
+                ObjectInputStream entryflow = new ObjectInputStream(sckt.getInputStream());
+                details = (Prod_details) entryflow.readObject();
+
+                /**
+                 * Extracts the details by the .getDetail() method from the class in a String
+                 */
+                String value = details.getValue();
+                String weight = details.getWeight();
+                String tax = details.getTax();
+
+                /**
+                 * Converts the Strings to double for the calculation of the total price
+                 */
+                double val = Integer.parseInt(value);
+                double wght = Integer.parseInt(weight);
+                double tx = Integer.parseInt(tax);
+
+                /**
+                 * Calculation of the total price
+                 * Converts the result back to a String
+                 */
+                double ope = (val * (tx / 100)) + (wght * 0.15);
+                String res = String.valueOf(ope);
+
+                /**
+                 * Appends the text with the details in the server text area
+                 */
+                txtarea.appendText("\n" + "The value is: " + value + ". The weight is: " + weight + ". The tax is: " + tax + ".");
+
+                /**
+                 * Generates another socket to send the information back to the client
+                 * exitflow sends a string back and then the stream and sockets are closed
+                 */
+                snsocket = new Socket("192.168.100.108", 5000);
+                DataOutputStream exitflow = new DataOutputStream(snsocket.getOutputStream());
+                exitflow.writeUTF(String.valueOf(ope));
+                exitflow.close();
+
+                snsocket.close();
+                sckt.close();
+            }
