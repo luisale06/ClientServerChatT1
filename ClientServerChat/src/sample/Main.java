@@ -94,3 +94,67 @@ public class Main extends Application implements Runnable{
          * Button´s action. Opens a socket to send,  as a class, the details written in the entries
          */
         btn.setOnAction(event -> {
+            try {
+                snsocket = new Socket("192.168.100.108", 4999);
+
+                /**
+                 * Creates instances of the class Prod_details and sets the
+                 * value, weight and tax from the entries
+                 */
+                Prod_details details = new Prod_details();
+                details.setValue(value_entry.getText());
+                details.setWeight(weight_entry.getText());
+                details.setTax(tax_entry.getText());
+
+                /**
+                 * The message sent by the client is an object
+                 * "exitflow" is the stream that receives it
+                 * and then the socket is closed
+                 */
+                ObjectOutputStream exitflow = new ObjectOutputStream(snsocket.getOutputStream());
+                exitflow.writeObject(details);
+
+                snsocket.close();
+
+            } catch (IOException e) {
+                /**
+                 * Exception catch, send a message with the error
+                 */
+                System.out.println(e.getMessage()); //Prints the exception
+            }
+        });
+
+        /**
+         * Vbox from Java FX generation and get Children method
+         */
+        box = new VBox();
+        box.getChildren().addAll(clientarea, value_entry, weight_entry, tax_entry, lblval, lblwght, lbltax, btn);
+
+        /**
+         * Scene from Java FX generation
+         */
+        scn = new Scene(box);
+
+        /**
+         * Thread initialization and generation
+         */
+        prepc = new Thread(this);
+        prepc.start();
+
+        /**
+         * Scenario location and dimensions specifications.
+         * Show method for the application to be seen
+         */
+        chat.setTitle("Product Chat");
+        chat.setHeight(400);
+        chat.setWidth(500);
+        chat.setScene(scn);
+        chat.show();
+    }
+
+    /**
+     * Run method, started by the prep Thread.
+     * Generates the server socket that is always looking for messages from the client
+     */
+    @Override
+    public void run(){
