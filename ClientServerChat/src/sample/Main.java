@@ -20,3 +20,22 @@ import java.io.*;
  * Client class
  */
 public class Main extends Application implements Runnable{
+
+    /**
+     * Variables for the application and sockets
+     */
+    Scene scn;
+    VBox box;
+    TextArea clientarea;
+    Label lblval, lblwght, lbltax;
+    TextField value_entry, weight_entry, tax_entry;
+    Button btn;
+    Socket snsocket, sckt;
+    ServerSocket resocket;
+    Thread prepc;
+
+    /**
+     * class that starts the application
+     */
+    @Override
+    public void start(Stage chat){
