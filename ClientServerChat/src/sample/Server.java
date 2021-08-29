@@ -132,3 +132,20 @@ public class Server extends Application implements Runnable {
                 snsocket.close();
                 sckt.close();
             }
+
+        } catch (IOException | ClassNotFoundException e) {
+            /**
+             * Exception catch, send a message with the error
+             */
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Launch the program
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+}
