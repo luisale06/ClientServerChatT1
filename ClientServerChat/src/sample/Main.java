@@ -158,3 +158,48 @@ public class Main extends Application implements Runnable{
      */
     @Override
     public void run(){
+
+        try{
+            resocket = new ServerSocket(5000);
+
+            /**
+             * While loop that keeps the socket looking for messages
+             */
+            while(true){
+                sckt = resocket.accept();
+
+                /**
+                 * The message sent by the client is a string
+                 * "entryflow" is the stream that receives it and "res"
+                 * read the object that is received
+                 */
+                DataInputStream entryflow = new DataInputStream(sckt.getInputStream());
+                String res = entryflow.readUTF();
+
+                /**
+                 * Appends the text with the details in the server
+                 * text area and closes the socket
+                 */
+                clientarea.appendText("\n The total price of the product is: " + res);
+
+                sckt.close();
+
+            }
+
+
+        }catch(Exception e){
+            /**
+             * Exception catch, send a message with the error
+             */
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Launch the program
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
+
