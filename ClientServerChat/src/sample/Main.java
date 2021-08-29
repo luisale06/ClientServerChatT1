@@ -203,3 +203,44 @@ public class Main extends Application implements Runnable{
     }
 }
 
+
+/**
+ * Class that save the details from the product
+ * introduced by the client
+ */
+class Prod_details implements Serializable {
+    /**
+     * Variables that are going to be saved
+     */
+    private String value, weight, tax;
+
+    /**
+     * get and set value method
+     */
+    public String getValue(){
+        return value;
+    }
+    public void setValue(String val){
+        this.value = val;
+    }
+
+    /**
+     * get and set weight method
+     */
+    public String getWeight(){
+        return weight;
+    }
+    public void setWeight(String wei){
+        this.weight = wei;
+    }
+
+    /**
+     * get and set tax method
+     */
+    public String getTax(){
+        return tax;
+    }
+    public void setTax(String tx){
+        this.tax = tx;
+    }
+}
